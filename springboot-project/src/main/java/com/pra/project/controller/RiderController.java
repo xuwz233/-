@@ -1,9 +1,12 @@
 package com.pra.project.controller;
 
+import com.pra.project.pojo.User;
 import com.pra.project.service.DeliveryService;
 import com.pra.project.service.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -26,4 +29,5 @@ public class RiderController {
         }
         return "fail";
     }
+
 }

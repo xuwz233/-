@@ -49,9 +49,9 @@
                             placeholder="输入关键字搜索"/>
                 </template> -->
                 <template slot-scope="scope" style="width: 100px">
-                    <!-- <el-button
+                    <el-button
                             size="mini"
-                            @click="edit(scope.$index+1, scope.row)" style="width: 50px;display: inline-block">修改</el-button> -->
+                            @click="edit(scope.row)" style="width: 50px;display: inline-block">修改</el-button>
                     <el-button
                             size="mini"
                             type="danger"
@@ -63,6 +63,30 @@
                 </template>
             </el-table-column>
         </el-table>
+
+<!--点击修改后的弹窗-->
+        <el-dialog title="用户信息" :visible.sync="editDialogVisible" style="line-height: 15px">
+            <el-form :model="userInfo" status-icon :rules="userRules" ref="userInfo" style="text-align: left">
+                <el-form-item label="姓名" :label-width="formLabelWidth" prop="name">
+                    <el-input v-model="userInfo.name" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="用户名" :label-width="formLabelWidth" prop="username">
+                    <el-input v-model="userInfo.username" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="手机号" :label-width="formLabelWidth" prop="phone">
+                    <el-input v-model="userInfo.phone" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="积分" :label-width="formLabelWidth" prop="score">
+                    <el-input v-model="userInfo.score" autocomplete="off"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="flush">取 消</el-button>
+                <el-button type="primary" @click="save">保 存</el-button>
+            </span>
+        </el-dialog>
+
+
         <el-pagination
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
@@ -92,8 +116,32 @@
             })
         },
         data(){
+            const validatename = (rule, value, callback) => {
+                if (value === ''||value==null) {
+                        callback(new Error("请输入姓名"))
+                }else {
+                        callback();
+                }
+                
+            };
             return{
-                userInfo:'',
+                id:'',
+                formLabelWidth:'120px',
+
+                // userInfo:'',
+                userInfo:{
+                    id:'',
+                    name:'',
+                    phone:'',
+                    username:'',
+                    score:''
+                },
+                userRules: {
+                            name: [
+                                {validator: validatename, trigger: 'blur'}
+                            ],
+
+                        },
                 search:'',
                 users:[
                     {
@@ -106,6 +154,8 @@
                         stat:''
                     }
                 ],
+                editDisabled:true,
+                editDialogVisible:false,
 
                 pageSize:5,
                 total: 0,
@@ -166,6 +216,57 @@
                         })
                     }
             },
+            edit(item){
+                // alert("进入修改了！");
+                        console.log(item);
+                        this.editDialogVisible = true;
+                        this.userInfo.name = item.name;
+                        this.userInfo.id = item.id;
+                        this.userInfo.phone = item.phone;
+                        this.userInfo.score = item.score;
+                        this.userInfo.username=item.username;
+            },
+             /*保存修改*/
+            save()
+            {
+                console.log(this.userInfo);
+                this.$refs['userInfo'].validate((valid) => {
+                    // alert("进入保存了");
+                    if (valid) {
+                        this.$confirm("确定要保存修改吗？", '提示', {
+                            confirmButtonText: '确定',
+                            cancelButtonText: '取消',
+                            type: 'info'
+                        }).then(() => {
+                            console.log(this.userInfo);
+                            this.axios.post("http://localhost:8084/updateAllUserMessage", this.userInfo).then(resp => {
+                                // alert("进入update了")
+                                if (resp.data === "success") {
+                                    this.$message({
+                                        message: "保存成功！！！",
+                                        type: 'success'
+                                    });
+                                    this.flush();
+                                } else {
+                                    this.$message({
+                                        message: "保存失败！！！",
+                                        type: 'warning'
+                                    });
+                                    this.flush();
+                                }
+                            })
+                        }).catch(() => {
+                            this.$message({
+                                type: 'info',
+                                message: '已取消'
+                            });
+                        })
+                    } else {
+                        return false;
+                    }
+                })
+            }
+        ,
             // edit(id,user){
             //     alert("修改用户")
             // },

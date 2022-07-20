@@ -22,4 +22,6 @@ public interface ShopManagerService {
     HashMap<String,Object> findAllShopManagerByPage(String currentPage, Integer valueOf);
 
     boolean changeShopManageStat(String stat, String sid);
+
+    boolean updateShopManagerMessage(ShopManager shopManager);
 }

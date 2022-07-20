@@ -42,4 +42,10 @@
         update delivery set stat=(${stat}) where d_id=(${did})
     </update>
 
+    <!--修改用户信息-->
+    <update id="updateRiderMessage" parameterType="delivery">
+        update delivery set name = #{name},phone = #{phone},total_num = #{totalNum},number=#{number} where d_id = #{did}
+    </update>
+
+
 </mapper>

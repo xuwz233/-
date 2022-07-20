@@ -20,4 +20,6 @@ public interface DeliveryService {
     boolean deliveryRegister(Delivery delivery);
 
     boolean changeRiderStat(String stat, String did);
+
+    boolean updateRiderMessage(Delivery delivery);
 }

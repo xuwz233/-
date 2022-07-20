@@ -11,7 +11,7 @@
       name: defaultDataSource
       url: jdbc:mysql://localhost:3306/test?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
       username: root
-      password: 123456
+      password: 226624lyr
     #servlet:
      # multipart:
       #  location: C:/Users/Administrator/Desktop/毕业设计项目/代码/project/pic/

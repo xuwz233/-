@@ -28,4 +28,6 @@ public interface ShopManagerMapper {
     List<ShopManager> findAllShopManagerByPage(@Param("startIndex") Integer startIndex, @Param("pageSize") Integer pageSize);
 
     Integer changeShopManageStat(@Param("stat") String stat, @Param("smid") String smid);
+
+    Integer updateShopManagerMessage(ShopManager shopManager);
 }

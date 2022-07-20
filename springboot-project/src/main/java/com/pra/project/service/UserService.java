@@ -33,4 +33,6 @@ public interface UserService {
     boolean updateUserMessage(User user);
 
     boolean changeUserStat(String stat, String id);
+
+    boolean updateAllUserMessage(User user);
 }

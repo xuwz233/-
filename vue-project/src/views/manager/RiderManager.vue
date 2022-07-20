@@ -41,16 +41,10 @@
             </el-table-column>
             <el-table-column
                     align="right" >
-                <!-- <template slot="header" slot-scope="scope">
-                    <el-input
-                            v-model="search"
-                            size="mini"
-                            placeholder="输入关键字搜索"/>
-                </template> -->
                 <template slot-scope="scope" style="width: 100px">
-                    <!-- <el-button
+                    <el-button
                             size="mini"
-                            @click="edit(scope.$index, scope.row)" style="width: 50px;display: inline-block">修改</el-button> -->
+                            @click="edit(scope.row)" style="width: 50px;display: inline-block">修改</el-button>
                     <el-button
                             size="mini"
                             type="danger"
@@ -62,6 +56,30 @@
                 </template>
             </el-table-column>
         </el-table>
+
+        <!--点击修改后的弹窗-->
+        <el-dialog title="骑手信息" :visible.sync="editDialogVisible" style="line-height: 15px">
+            <el-form :model="userInfo" status-icon :rules="userRules" ref="userInfo" style="text-align: left">
+                <el-form-item label="姓名" :label-width="formLabelWidth" prop="name">
+                    <el-input v-model="userInfo.name" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="手机号" :label-width="formLabelWidth" prop="phone">
+                    <el-input v-model="userInfo.phone" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="身份证号" :label-width="formLabelWidth" prop="number">
+                    <el-input v-model="userInfo.number" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="总接单数" :label-width="formLabelWidth" prop="totalNum">
+                    <el-input v-model="userInfo.totalNum" autocomplete="off"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="flush">取 消</el-button>
+                <el-button type="primary" @click="save">保 存</el-button>
+            </span>
+        </el-dialog>
+
+
         <el-pagination
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
@@ -90,8 +108,31 @@
             })
         },
         data(){
+            const validatename = (rule, value, callback) => {
+                if (value === ''||value==null) {
+                        callback(new Error("请输入姓名"))
+                }else {
+                        callback();
+                }
+                
+            };
             return{
-                userInfo:'',
+                did:'',
+                formLabelWidth:'120px',
+                // userInfo:'',
+                userInfo:{
+                    did:'',
+                    name:'',
+                    phone:'',
+                    totalNum:'',
+                    number:''
+                },
+                userRules: {
+                            name: [
+                                {validator: validatename, trigger: 'blur'}
+                            ],
+
+                        },
                 search:'',
                 riders:[
                     {
@@ -103,6 +144,8 @@
                         stat:''
                     }
                 ],
+                editDisabled:true,
+                editDialogVisible:false,
 
                 pageSize:5,
                 total: 0,
@@ -160,6 +203,56 @@
                     }
                     // this.flush();
                 },
+            edit(item){
+                console.log(item);
+                        this.editDialogVisible = true;
+                        this.userInfo.name = item.name;
+                        this.userInfo.did = item.did;
+                        this.userInfo.phone = item.phone;
+                        this.userInfo.totalNum = item.totalNum;
+                        this.userInfo.number=item.number;
+            },
+             /*保存修改*/
+            save()
+            {
+                console.log(this.userInfo);
+                this.$refs['userInfo'].validate((valid) => {
+                    // alert("进入保存了");
+                    if (valid) {
+                        this.$confirm("确定要保存修改吗？", '提示', {
+                            confirmButtonText: '确定',
+                            cancelButtonText: '取消',
+                            type: 'info'
+                        }).then(() => {
+                            console.log(this.userInfo);
+                            this.axios.post("http://localhost:8084/updateRiderMessage", this.userInfo).then(resp => {
+                                // alert("进入update了")
+                                if (resp.data === "success") {
+                                    this.$message({
+                                        message: "保存成功！！！",
+                                        type: 'success'
+                                    });
+                                    this.flush();
+                                } else {
+                                    this.$message({
+                                        message: "保存失败！！！",
+                                        type: 'warning'
+                                    });
+                                    this.flush();
+                                }
+                            })
+                        }).catch(() => {
+                            this.$message({
+                                type: 'info',
+                                message: '已取消'
+                            });
+                        })
+                    } else {
+                        return false;
+                    }
+                })
+            }
+        ,
             handleSizeChange(val) {
                 this.pageSize = val;
                 const that = this;

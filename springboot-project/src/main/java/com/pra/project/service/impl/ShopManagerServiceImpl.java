@@ -80,4 +80,10 @@ public class ShopManagerServiceImpl implements ShopManagerService {
 //        return false;
         return true;
     }
+
+    @Override
+    public boolean updateShopManagerMessage(ShopManager shopManager) {
+        shopManagerMapper.updateShopManagerMessage(shopManager);
+        return true;
+    }
 }

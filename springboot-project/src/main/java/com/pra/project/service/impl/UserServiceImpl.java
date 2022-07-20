@@ -94,4 +94,14 @@ public class UserServiceImpl implements UserService {
 //        return false;
         return true;
     }
+
+    @Override
+    public boolean updateAllUserMessage(User user) {
+        userMapper.updateAllUserMessage(user);
+//        if(row>0){
+//            return true;
+//        }
+//        return false;
+        return true;
+    }
 }

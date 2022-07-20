@@ -43,6 +43,10 @@
         update shop_manager set stat=(${stat}) where s_m_id=(${smid})
     </update>
 
+    <!--管理员修改店铺管理员信息-->
+    <update id="updateShopManagerMessage" parameterType="shopManager">
+        update shop_manager set name=#{name},user_name = #{username},phone = #{phone},identity_number=#{identityNumber} where s_m_id = #{smid}
+    </update>
 
 
 

@@ -34,4 +34,6 @@ public interface DeliveryMapper {
     Integer deliverRegister(Delivery delivery);
 
     void changeRiderStat(@Param("stat") String stat, @Param("did") String did);
+
+    void updateRiderMessage(Delivery delivery);
 }

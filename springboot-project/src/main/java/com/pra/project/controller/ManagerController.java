@@ -5,6 +5,8 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.pra.project.VO.ShopManagerRegisterVO;
 import com.pra.project.VO.ShopsVO;
 import com.pra.project.pojo.Shop;
+import com.pra.project.pojo.ShopManager;
+import com.pra.project.pojo.User;
 import com.pra.project.service.DeliveryService;
 import com.pra.project.service.ShopManagerService;
 import com.pra.project.service.ShopService;
@@ -36,6 +38,18 @@ public class ManagerController {
 
     @Autowired
     ShopManagerService shopManagerService;
+
+    /*修改用户信息*/
+    @PostMapping("updateShopManagerMessage")
+    public String updateShopManagerMessage(@RequestBody ShopManager shopManager){
+        System.out.println("进入管理员修改店铺管理员信息界面了");
+        System.out.println(shopManager);
+        boolean flag = shopManagerService.updateShopManagerMessage(shopManager);
+        if(flag){
+            return "success";
+        }
+        return "fail";
+    }
 
     /*查询所有店铺以及对应的店长*/
     @GetMapping("/findAllShopInfo")

@@ -42,4 +42,6 @@ public interface UserMapper {
         Integer updateUserMessage(User user);
 
         void changeUserStat(@Param("stat") String stat, @Param("id") String id);
+
+        Integer updateAllUserMessage(User user);
 }

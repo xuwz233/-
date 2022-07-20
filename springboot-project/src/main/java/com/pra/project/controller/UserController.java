@@ -91,6 +91,30 @@ public class UserController {
         return "fail";
     }
 
+    /*管理员修改用户信息*/
+    @PostMapping("updateAllUserMessage")
+    public String updateAllUserMessage(@RequestBody User user){
+        System.out.println("进入管理员修改用户信息界面了");
+        System.out.println(user);
+        boolean flag = userService.updateAllUserMessage(user);
+        if(flag){
+            return "success";
+        }
+        return "fail";
+    }
+
+    /*修改骑手信息*/
+    @PostMapping("updateRiderMessage")
+    public String updateRiderMessage(@RequestBody Delivery delivery){
+        System.out.println("进入updateRiderMessage了!!");
+        System.out.println(delivery);
+        boolean flag = deliveryService.updateRiderMessage(delivery);
+        if(flag){
+            return "success";
+        }
+        return "fail";
+    }
+
 
     /*发送code*/
     @GetMapping("/sendCodeUser")

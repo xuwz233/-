@@ -70,4 +70,10 @@ public class DeliveryServiceImpl implements DeliveryService {
 //        return false;
         return true;
     }
+
+    @Override
+    public boolean updateRiderMessage(Delivery delivery) {
+        deliveryMapper.updateRiderMessage(delivery);
+        return true;
+    }
 }

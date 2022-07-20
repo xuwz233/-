@@ -6,6 +6,7 @@ import com.pra.project.VO.ShopManagerRegisterVO;
 import com.pra.project.VO.ShopsVO;
 import com.pra.project.pojo.Good;
 import com.pra.project.pojo.Shop;
+import com.pra.project.pojo.ShopManager;
 
 import java.util.HashMap;
 import java.util.List;
